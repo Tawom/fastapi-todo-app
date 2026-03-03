@@ -31,3 +31,5 @@ alembic/versions/*.pyc
 
 # OS
 .DS_Store
+*.db
+*.db-journal
