@@ -1,0 +1,33 @@
+/venv/
+env/
+ENV/
+
+# Python
+__pycache__/
+*.py[cod]
+*.so
+.Python
+
+# Database
+*.db
+*.db-journal
+
+# Environment variables
+.env
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Tests
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Alembic
+alembic/versions/*.pyc
+
+# OS
+.DS_Store
