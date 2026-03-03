@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Todos - Todo App</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: #f5f5f5;
+        }
+
+        .navbar {
+            background: white;
+            padding: 15px 30px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar h2 {
+            color: #333;
+        }
+
+        .nav-links a {
+            color: #666;
+            text-decoration: none;
+            margin-left: 20px;
+            padding: 8px 16px;
+            border-radius: 4px;
+            transition: all 0.3s;
+        }
+
+        .nav-links a:hover {
+            background: #f0f0f0;
+            color: #333;
+        }
+
+        .nav-links button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-left: 20px;
+        }
+
+        .nav-links button:hover {
+            background: #5a67d8;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .header-card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-card h1 {
+            color: #333;
+            font-size: 24px;
+        }
+
+        .stats {
+            display: flex;
+            gap: 20px;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: #999;
+            text-transform: uppercase;
+        }
+
+        .add-todo-card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+
+        .add-todo-form {
+            display: flex;
+            gap: 10px;
+        }
+
+        .add-todo-form input {
+            flex: 1;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 6px;
+            font-size: 16px;
+        }
+
+        .add-todo-form input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .add-todo-form button {
+            padding: 12px 24px;
+            background: #48bb78;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .add-todo-form button:hover {
+            background: #38a169;
+        }
+
+        .todo-list {
+            list-style: none;
+        }
+
+        .todo-item {
+            background: white;
+            border-radius: 8px;
+            padding: 15px 20px;
+            margin-bottom: 10px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .todo-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .todo-checkbox {
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+            accent-color: #667eea;
+        }
+
+        .todo-content {
+            flex: 1;
+        }
+
+        .todo-title {
+            font-size: 16px;
+            color: #333;
+            margin-bottom: 4px;
+        }
+
+        .todo-title.completed {
+            text-decoration: line-through;
+            color: #999;
+        }
+
+        .todo-description {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .todo-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .edit-btn, .delete-btn {
+            padding: 6px 12px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.3s;
+        }
+
+        .edit-btn {
+            background: #4299e1;
+            color: white;
+        }
+
+        .edit-btn:hover {
+            background: #3182ce;
+        }
+
+        .delete-btn {
+            background: #f56565;
+            color: white;
+        }
+
+        .delete-btn:hover {
+            background: #e53e3e;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: #999;
+            font-size: 16px;
+        }
+
+        .empty-state p {
+            margin-bottom: 20px;
+        }
+
+        .empty-state .suggestion {
+            font-size: 14px;
+            color: #667eea;
+        }
+
+        .edit-form {
+            flex: 1;
+            display: flex;
+            gap: 10px;
+        }
+
+        .edit-form input {
+            flex: 1;
+            padding: 8px;
+            border: 2px solid #e0e0e0;
+            border-radius: 4px;
+        }
+
+        .edit-form button {
+            padding: 8px 16px;
+            background: #48bb78;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .edit-form button.cancel {
+            background: #a0aec0;
+        }
+    </style>
+</head>
+<body>
+<nav class="navbar">
+    <h2>📝 Todo App</h2>
+    <div class="nav-links">
+        <a href="/">Home</a>
+        <a href="/dashboard">Dashboard</a>
+        <a href="/todos" style="font-weight: bold; color: #667eea;">My Todos</a>
+        <button onclick="handleLogout()">Logout</button>
+    </div>
+</nav>
+
+<div class="container">
+    <div class="header-card">
+        <h1>My Todos</h1>
+        <div class="stats">
+            <div class="stat">
+                <div class="stat-value" id="totalCount">0</div>
+                <div class="stat-label">Total</div>
+            </div>
+            <div class="stat">
+                <div class="stat-value" id="completedCount">0</div>
+                <div class="stat-label">Done</div>
+            </div>
+            <div class="stat">
+                <div class="stat-value" id="pendingCount">0</div>
+                <div class="stat-label">Pending</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="add-todo-card">
+        <form id="addTodoForm" onsubmit="handleAddTodo(event)" class="add-todo-form">
+            <input type="text" id="todoTitle" placeholder="What needs to be done?" required>
+            <input type="text" id="todoDescription" placeholder="Add description (optional)">
+            <button type="submit">Add Todo</button>
+        </form>
+    </div>
+
+    <div id="todoList" class="todo-list">
+        <!-- Todos will be loaded here -->
+    </div>
+</div>
+
+<script>
+    // Check authentication
+    const token = localStorage.getItem('access_token');
+    if (!token) {
+        window.location.href = '/login';
+    }
+
+    // Load todos on page load
+    document.addEventListener('DOMContentLoaded', loadTodos);
+
+    async function loadTodos() {
+        try {
+            const response = await fetch('/todos/', {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+
+            if (response.ok) {
+                const todos = await response.json();
+                renderTodos(todos);
+                updateStats(todos);
+            } else if (response.status === 401) {
+                // Token expired
+                localStorage.removeItem('access_token');
+                localStorage.removeItem('user');
+                window.location.href = '/login';
+            }
+        } catch (error) {
+            console.error('Error loading todos:', error);
+        }
+    }
+
+    function renderTodos(todos) {
+        const todoList = document.getElementById('todoList');
+
+        if (todos.length === 0) {
+            todoList.innerHTML = `
+                <div class="empty-state">
+                    <p>✨ No todos yet!</p>
+                    <p class="suggestion">Add your first todo above ☝️</p>
+                </div>
+            `;
+            return;
+        }
+
+        todoList.innerHTML = todos.map(todo => `
+            <div class="todo-item" data-id="${todo.id}" id="todo-${todo.id}">
+                <input type="checkbox"
+                       class="todo-checkbox"
+                       ${todo.completed ? 'checked' : ''}
+                       onchange="toggleTodo(${todo.id}, this.checked)">
+
+                <div class="todo-content">
+                    <div class="todo-title ${todo.completed ? 'completed' : ''}">${todo.title}</div>
+                    ${todo.description ? `<div class="todo-description">${todo.description}</div>` : ''}
+                </div>
+
+                <div class="todo-actions">
+                    <button class="edit-btn" onclick="editTodo(${todo.id})">Edit</button>
+                    <button class="delete-btn" onclick="deleteTodo(${todo.id})">Delete</button>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    function updateStats(todos) {
+        const total = todos.length;
+        const completed = todos.filter(t => t.completed).length;
+        const pending = total - completed;
+
+        document.getElementById('totalCount').textContent = total;
+        document.getElementById('completedCount').textContent = completed;
+        document.getElementById('pendingCount').textContent = pending;
+    }
+
+    async function handleAddTodo(event) {
+        event.preventDefault();
+
+        const title = document.getElementById('todoTitle').value;
+        const description = document.getElementById('todoDescription').value;
+
+        try {
+            const response = await fetch('/todos/', {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    title: title,
+                    description: description || null,
+                    completed: false
+                })
+            });
+
+            if (response.ok) {
+                document.getElementById('todoTitle').value = '';
+                document.getElementById('todoDescription').value = '';
+                loadTodos(); // Reload the list
+            } else {
+                alert('Failed to create todo');
+            }
+        } catch (error) {
+            console.error('Error creating todo:', error);
+        }
+    }
+
+    async function toggleTodo(todoId, completed) {
+        try {
+            const response = await fetch(`/todos/${todoId}`, {
+                method: 'PUT',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ completed: completed })
+            });
+
+            if (response.ok) {
+                loadTodos(); // Reload to update stats
+            }
+        } catch (error) {
+            console.error('Error updating todo:', error);
+        }
+    }
+
+    async function deleteTodo(todoId) {
+        if (!confirm('Are you sure you want to delete this todo?')) {
+            return;
+        }
+
+        try {
+            const response = await fetch(`/todos/${todoId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+
+            if (response.ok) {
+                loadTodos(); // Reload the list
+            }
+        } catch (error) {
+            console.error('Error deleting todo:', error);
+        }
+    }
+
+    function editTodo(todoId) {
+        const todoElement = document.getElementById(`todo-${todoId}`);
+        const contentDiv = todoElement.querySelector('.todo-content');
+        const title = todoElement.querySelector('.todo-title').textContent;
+        const description = todoElement.querySelector('.todo-description')?.textContent || '';
+
+        // Replace content with edit form
+        contentDiv.innerHTML = `
+            <div class="edit-form">
+                <input type="text" id="edit-title-${todoId}" value="${title}" placeholder="Title">
+                <input type="text" id="edit-description-${todoId}" value="${description}" placeholder="Description">
+                <button onclick="saveEdit(${todoId})">Save</button>
+                <button class="cancel" onclick="loadTodos()">Cancel</button>
+            </div>
+        `;
+    }
+
+    async function saveEdit(todoId) {
+        const newTitle = document.getElementById(`edit-title-${todoId}`).value;
+        const newDescription = document.getElementById(`edit-description-${todoId}`).value;
+
+        try {
+            const response = await fetch(`/todos/${todoId}`, {
+                method: 'PUT',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    title: newTitle,
+                    description: newDescription || null
+                })
+            });
+
+            if (response.ok) {
+                loadTodos(); // Reload to show updated todo
+            }
+        } catch (error) {
+            console.error('Error updating todo:', error);
+        }
+    }
+
+    function handleLogout() {
+        localStorage.removeItem('access_token');
+        localStorage.removeItem('user');
+        window.location.href = '/login';
+    }
+</script>
+</body>
+</html>

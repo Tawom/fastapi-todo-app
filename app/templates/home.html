@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo API - Home</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        h1 { color: #333; }
+        .card {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .endpoint {
+            background: #f4f4f4;
+            padding: 10px;
+            border-radius: 4px;
+            font-family: monospace;
+        }
+        .docs-link {
+            display: inline-block;
+            background: #007bff;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 4px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+<h1>🚀 Todo API</h1>
+<p>Welcome to the Todo API - your task management solution!</p>
+
+<div style="text-align: right; margin-bottom: 20px;">
+    <a href="/login" style="background: #667eea; color: white; padding: 10px 20px; text-decoration: none; border-radius: 4px;">Login</a>
+    <a href="/register" style="background: #48bb78; color: white; padding: 10px 20px; text-decoration: none; border-radius: 4px; margin-left: 10px;">Register</a>
+</div>
+
+<div class="card">
+    <h2>API Documentation</h2>
+    <p>Explore the interactive API documentation:</p>
+    <a href="/docs" class="docs-link" target="_blank">Swagger UI →</a>
+    <a href="/redoc" class="docs-link" style="background: #28a745;" target="_blank">ReDoc →</a>
+</div>
+
+<div class="card">
+    <h2>Available Endpoints</h2>
+    <p>Main API endpoints:</p>
+    <div class="endpoint">GET / - This page</div>
+    <div class="endpoint">GET /ping - Health check</div>
+    <div class="endpoint">POST /auth/register - Register new user</div>
+    <div class="endpoint">POST /auth/login - Login and get token</div>
+    <div class="endpoint">GET /auth/users/me - Get current user</div>
+    <div class="endpoint">GET /todos/ - List your todos</div>
+    <div class="endpoint">POST /todos/ - Create a todo</div>
+</div>
+
+<div class="card">
+    <h2>Admin Endpoints</h2>
+    <p>Requires admin privileges:</p>
+    <div class="endpoint">GET /admin/users - List all users</div>
+    <div class="endpoint">GET /admin/users/{id} - Get user by ID</div>
+    <div class="endpoint">PUT /admin/users/{id}/role - Update user role</div>
+</div>
+
+<footer style="margin-top: 40px; color: #666; font-size: 0.9em;">
+    <p>Built with FastAPI, SQLAlchemy, and Jinja2</p>
+</footer>
+</body>
+</html>
